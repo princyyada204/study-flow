@@ -1,5 +1,77 @@
 // popup.js - Enhanced popup functionality with web monitoring integration
 
+// ========== TIME AND NAVIGATION UTILITIES ==========
+
+// Update current time
+function updateTime() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString('en-US', { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  });
+  const timeElement = document.getElementById('currentTime');
+  if (timeElement) {
+    timeElement.textContent = timeString;
+  }
+}
+
+// Navigation functionality
+function setupNavigation() {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+      // Remove active class from all nav items
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      // Add active class to clicked item
+      this.classList.add('active');
+      
+      // Hide all pages
+      document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
+      
+      // Show selected page
+      const pageId = this.getAttribute('data-page') + 'Page';
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+        
+        // Update page title based on selection
+        const titles = {
+          dashboard: 'Your Progress Today',
+          analytics: 'Web Analytics',
+          focus: 'Focus Session',
+          blocker: 'Site Blocker',
+          goals: 'Goals & Targets',
+          notes: 'Quick Notes',
+          calendar: 'Learning Schedule Plan',
+          bookmarks: 'Productive Bookmarks'
+        };
+        
+        const subtitles = {
+          dashboard: 'Track your learning journey',
+          analytics: 'Monitor your web activity',
+          focus: 'Start a productive session',
+          blocker: 'Block distracting websites',
+          goals: 'Set and achieve your targets',
+          notes: 'Capture important thoughts',
+          calendar: 'Plan your study schedule',
+          bookmarks: 'Access productive resources'
+        };
+        
+        const page = this.getAttribute('data-page');
+        const titleElement = document.getElementById('pageTitle');
+        const subtitleElement = document.getElementById('pageSubtitle');
+        
+        if (titleElement) {
+          titleElement.textContent = titles[page] || 'StudyFlow';
+        }
+        if (subtitleElement) {
+          subtitleElement.innerHTML = `<i class="fas fa-search"></i><span>${subtitles[page] || 'Productivity tracker'}</span>`;
+        }
+      }
+    });
+  });
+}
+
 // ========== GLOBAL VARIABLES ==========
 let focusTimer = null;
 let focusTimeRemaining = 25 * 60; // 25 minutes in seconds
@@ -44,6 +116,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function initializePopup() {
   try {
+    // Setup time updates
+    updateTime();
+    setInterval(updateTime, 60000);
+    
+    // Setup navigation
+    setupNavigation();
+    
     await loadDashboardData();
     await loadUserStats();
     updateMotivationalQuote();
@@ -1300,11 +1379,6 @@ function displayBookmarks(bookmarks, category = 'all') {
           <i class="fas fa-external-link-alt"></i>
         </button>
         <button class="btn" data-action="remove" data-id="${bookmark.id}" style="padding: 6px 8px; font-size: 0.8em; background: #f87171;">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
-        </button>
-        <button class="btn" onclick="removeBookmark('${bookmark.id}')" style="padding: 6px 8px; font-size: 0.8em; background: #f87171;">
           <i class="fas fa-trash"></i>
         </button>
       </div>
