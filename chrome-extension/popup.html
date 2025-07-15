@@ -920,7 +920,7 @@
     <div class="user-greeting">
       <div class="user-avatar" id="userAvatar">A</div>
       <div class="greeting-text">
-        <div class="greeting-name">Hello Alex</div>
+        <div class="greeting-name">Hello</div>
         <div class="greeting-subtitle">Ready to be productive?</div>
       </div>
       <div class="progress-indicator">
@@ -1416,69 +1416,5 @@
 
   <script src="chart.js"></script>
   <script src="popup.js"></script>
-  
-  <script>
-    // Update current time
-    function updateTime() {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit',
-        hour12: true 
-      });
-      document.getElementById('currentTime').textContent = timeString;
-    }
-    
-    // Update time immediately and then every minute
-    updateTime();
-    setInterval(updateTime, 60000);
-    
-    // Navigation functionality
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        // Remove active class from all nav items
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        // Add active class to clicked item
-        this.classList.add('active');
-        
-        // Hide all pages
-        document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
-        
-        // Show selected page
-        const pageId = this.getAttribute('data-page') + 'Page';
-        const targetPage = document.getElementById(pageId);
-        if (targetPage) {
-          targetPage.classList.add('active');
-          
-          // Update page title based on selection
-          const titles = {
-            dashboard: 'Your Progress Today',
-            analytics: 'Web Analytics',
-            focus: 'Focus Session',
-            blocker: 'Site Blocker',
-            goals: 'Goals & Targets',
-            notes: 'Quick Notes',
-            calendar: 'Learning Schedule Plan',
-            bookmarks: 'Productive Bookmarks'
-          };
-          
-          const subtitles = {
-            dashboard: 'Track your learning journey',
-            analytics: 'Monitor your web activity',
-            focus: 'Start a productive session',
-            blocker: 'Block distracting websites',
-            goals: 'Set and achieve your targets',
-            notes: 'Capture important thoughts',
-            calendar: 'Plan your study schedule',
-            bookmarks: 'Access productive resources'
-          };
-          
-          const page = this.getAttribute('data-page');
-          document.getElementById('pageTitle').textContent = titles[page] || 'StudyFlow';
-          document.getElementById('pageSubtitle').innerHTML = `<i class="fas fa-search"></i><span>${subtitles[page] || 'Productivity tracker'}</span>`;
-        }
-      });
-    });
-  </script>
 </body>
 </html>
